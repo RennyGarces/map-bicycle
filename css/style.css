@@ -23,7 +23,7 @@ html {
 }
 
 body {
-  font-family: 'Josefin', sans-serif;
+  font-family: "Josefin", sans-serif;
   background-image: linear-gradient(to right, #aab3e2, #fffec9);
 }
 /* ================================================================= */
@@ -129,7 +129,7 @@ none: It prevents both scroll chaining and the default action. The scrolling sto
   border-bottom-right-radius: 10px;
   background-color: var(--background);
   padding: 1rem;
-  height: 40rem;
+  height: 50rem;
   display: grid;
   grid-template-columns: 1fr;
 }
