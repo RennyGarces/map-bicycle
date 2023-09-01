@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <!--  Using a Hosted Version of Leaflet-->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <!-- ADDING DEFER atributte IMPORTANT -->
+    <script
+      defer
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <!--https://leafletjs.com/download.html  -->
+    <script defer src="js/script.js"></script>
+    <link rel="shortcut icon" type="image/png" href="img/icon-preview.png" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>MapingYou</title>
+  </head>
+  <body>
+    <header>
+      <div>
+        <img src="img/jogo--preview.png" alt="Logo" class="logo" />
+      </div>
+      <h1 class="title">
+        WE HELP YOU CHOOSE YOUR BEST BICYCLE ROUTE FOR TODAY
+      </h1>
+    </header>
+    <aside>
+      <div id="map"></div>
+      <img src="img/hand.png" alt="logo hand" class="animation" />
+      <!-- insert the map API -->
+    </aside>
+    <section class="container">
+      <div class="sidebar">
+        <ul class="workouts">
+          <!-- form -->
+          <div class="information">
+            <h1 class="information">Touch the map to see the options</h1>
+            <img
+              src="img/only-letter--preview.png"
+              alt="letter logo"
+              class="letter__logo"
+            />
+            <img src="img/icon-preview.png" alt="icon logo" class="logo" />
+          </div>
+          <form class="form hidden">
+            <div class="form__row">
+              <label class="form__label">Distance</label>
+              <input
+                class="form__input form__input--distance"
+                placeholder="km"
+              />
+            </div>
+            <div class="form__row">
+              <label class="form__label">Time</label>
+              <input class="form__input form__input--time" placeholder="min" />
+            </div>
+            <div class="form__row">
+              <label class="form__label">Elevation</label>
+              <input
+                class="form__input form__input--elevation"
+                placeholder="meters"
+              />
+            </div>
+            <button class="form__btn">OK</button>
+          </form>
+          <!-- form -->
+          <!-- <li class="workout workout--running" data-id="1234567890">
+          <h2 class="workout__title">Running on April 14</h2>
+          <div class="workout__details">
+            <span class="workout__icon">🏃‍♂️</span>
+            <span class="workout__value">5.2</span>
+            <span class="workout__unit">km</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⏱</span>
+            <span class="workout__value">24</span>
+            <span class="workout__unit">min</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⚡️</span>
+            <span class="workout__value">4.6</span>
+            <span class="workout__unit">min/km</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">🦶🏼</span>
+            <span class="workout__value">178</span>
+            <span class="workout__unit">spm</span>
+          </div>
+        </li>
+
+        <li class="workout workout--cycling" data-id="1234567891">
+          <h2 class="workout__title">Cycling on April 5</h2>
+          <div class="workout__details">
+            <span class="workout__icon">🚴‍♀️</span>
+            <span class="workout__value">27</span>
+            <span class="workout__unit">km</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⏱</span>
+            <span class="workout__value">95</span>
+            <span class="workout__unit">min</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⚡️</span>
+            <span class="workout__value">16</span>
+            <span class="workout__unit">km/h</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⛰</span>
+            <span class="workout__value">223</span>
+            <span class="workout__unit">m</span>
+          </div>
+        </li> -->
+        </ul>
+      </div>
+    </section>
+    <footer>
+      <img src="img/purple wve footer image.png" class="wave" />
+
+      <did class="footer__information">
+        <nav class="icons-footer">
+          <button class="btn__footer">
+            <a
+              rel="noopener"
+              href="https://www.linkedin.com/in/renny-garces-marriaga"
+              target="_blank"
+              ><img
+                alt="images contact icons"
+                class="icon_contacts"
+                src="https://www.svgrepo.com/show/363726/linkedin-logo-duotone.svg"
+            /></a>
+          </button>
+          <button class="btn__footer">
+            <a href="mailto:rennygarces1983@gmail.com" target="_blank"
+              ><img
+                alt="images contact icons"
+                class="icon_contacts"
+                src="https://www.svgrepo.com/show/502647/email-open.svg"
+            /></a>
+          </button>
+          <button class="btn__footer">
+            <a href="https://github.com/RennyGarces" target="_blank"
+              ><img
+                alt="images contact icons"
+                class="icon_contacts"
+                src="/img/iconmonstr-github-1.svg"
+            /></a>
+          </button>
+        </nav>
+      </did>
+      <p class="copyright">&copy; Renny Garces | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>
+<a
+  class="portafolio-renny-garces"
+  target="_blank"
+  href="https://portafolio-renny-garces.netlify.app/"
+></a>
