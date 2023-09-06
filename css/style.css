@@ -99,7 +99,7 @@ aside {
   color: var(--color--letters);
   line-height: 1.2;
   display: flex;
-  height: 70vh;
+  height: 60vh;
   overscroll-behavior-y: none;
   /* The overscroll-behavior-y property is a CSS property that controls how the browser behaves when reaching the top or bottom boundary of a scrolling area in the vertical direction. It has three possible values: auto, contain, and none.
 
@@ -191,19 +191,6 @@ none: It prevents both scroll chaining and the default action. The scrolling sto
 .form__btn {
   display: none;
 }
-
-.twitter-link:link,
-.twitter-link:visited {
-  color: var(--color-light--1);
-  transition: all 0.2s;
-}
-
-.twitter-link:hover,
-.twitter-link:active {
-  color: var(--color-light--2);
-}
-/* ========================== */
-
 /* ============================================================== */
 /* workouts */
 .workouts {
@@ -215,7 +202,13 @@ none: It prevents both scroll chaining and the default action. The scrolling sto
 
 .workouts::-webkit-scrollbar {
   width: 0;
-  /* The selector .workouts::-webkit-scrollbar means that you want to style the scrollbar of an element with the class workouts using the non-standard CSS pseudo-element ::-webkit-scrollbar. This pseudo-element affects the style of an element’s scrollbar when it has overflow: scroll; set. Note that this feature is only available in Blink- and WebKit-based browsers, such as Chrome, Edge, Opera, Safari, and others. A standardized method of styling scrollbars is available with scrollbar-color and scrollbar-width, but is currently only supported in Firefox. */
+  /* The selector .workouts::-webkit-scrollbar means that you want to 
+  style the scrollbar of an element with the class workouts using the non-standard 
+  CSS pseudo-element ::-webkit-scrollbar. This pseudo-element affects the style of an 
+  element’s scrollbar when it has overflow: scroll; set. Note that this feature is only available 
+  in Blink- and WebKit-based browsers, such as Chrome, Edge, Opera, Safari, and others. A standardized
+  method of styling scrollbars is available with scrollbar-color and scrollbar-width, but is currently
+   only supported in Firefox. */
 }
 
 .workout {
@@ -229,9 +222,7 @@ none: It prevents both scroll chaining and the default action. The scrolling sto
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 0.75rem 1.5rem;
 }
-.workout--running {
-  border-left: 5px solid var(--color--purple);
-}
+
 .workout--cycling {
   border-left: 5px solid var(--color--orange);
 }
@@ -280,14 +271,12 @@ none: It prevents both scroll chaining and the default action. The scrolling sto
   background-color: var(--color-dark--1);
 }
 
-.running-popup .leaflet-popup-content-wrapper {
-  border-left: 5px solid var(--color--purple);
-}
 .cycling-popup .leaflet-popup-content-wrapper {
   border-left: 5px solid var(--color--orange);
 }
 /* footer */
 footer {
+  margin-top: 10rem;
   position: relative;
   display: flex;
   justify-content: end;
