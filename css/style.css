@@ -29,8 +29,7 @@ body {
 /* ================================================================= */
 /* header */
 header {
-  margin-top: 1rem;
-
+  margin-top: 6rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -48,6 +47,17 @@ header {
   font-weight: bolder;
   letter-spacing: 0.3rem;
 }
+.banner__user {
+  position: absolute;
+  top: 0;
+  color: var(--color--letters);
+  margin: 1rem;
+  padding: 1.4rem;
+  border-radius: 5px;
+  font-size: 2rem;
+  background-color: var(--background);
+}
+
 aside {
   position: relative;
 }
@@ -91,6 +101,7 @@ aside {
 }
 
 /* ============================== */
+
 /* container */
 .container {
   display: flex;
@@ -99,59 +110,61 @@ aside {
   color: var(--color--letters);
   line-height: 1.2;
   display: flex;
-  height: 60vh;
+
   overscroll-behavior-y: none;
   /* The overscroll-behavior-y property is a CSS property that controls how the browser behaves when reaching the top or bottom boundary of a scrolling area in the vertical direction. It has three possible values: auto, contain, and none.
 
 auto: The default value. It allows the browser to perform the default action, such as a bounce effect or a page refresh, when the boundary is reached. It also allows the scrolling to propagate to the parent element if it is also scrollable. This is called scroll chaining.
 contain: It prevents scroll chaining, meaning that the scrolling does not affect the parent element when the boundary is reached. However, it still allows the browser to perform the default action, such as a bounce effect or a page refresh.
 none: It prevents both scroll chaining and the default action. The scrolling stops abruptly when the boundary is reached. */
+  list-style: none;
+  height: 50vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
-.information {
+.container::-webkit-scrollbar {
+  width: 0; /* hid the scroll bar button */
+}
+
+/* SIDEBAR */
+.sidebar {
+  background-color: var(--background);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  padding: 2rem;
+}
 
-  gap: 5rem;
-  margin-top: 3rem;
+.information {
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   font-weight: 600;
   text-align: center;
-  font-size: 5rem;
+  font-size: 3rem;
   color: var(--color--orange);
   letter-spacing: 0.1rem;
 }
 .letter__logo {
-  width: 25rem;
-}
-/* SIDEBAR */
-.sidebar {
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  background-color: var(--background);
-  padding: 1rem;
-  height: 50rem;
-  display: grid;
-  grid-template-columns: 1fr;
-}
-.sidebar--columns {
-  padding: 3rem;
-  grid-template-columns: 1fr 0.2fr;
+  width: 30rem;
 }
 
 /* ========form============ */
 /* forms */
-.form {
-  background-color: var(--background);
-  border-radius: 30px;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  height: 26rem;
-  width: 27rem;
-  transition: all 1s, transform 1ms;
-}
 
+.form__container {
+  transition: all 1s, transform 1ms;
+  background-color: var(--background);
+  border-radius: 10px;
+  margin: 1rem;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
 .hidden {
   transform: translateY(-100rem); /* move th form to the side */
   height: 0;
@@ -192,71 +205,23 @@ none: It prevents both scroll chaining and the default action. The scrolling sto
   display: none;
 }
 /* ============================================================== */
-/* workouts */
-.workouts {
-  list-style: none;
-  height: 77vh;
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
-
-.workouts::-webkit-scrollbar {
-  width: 0;
-  /* The selector .workouts::-webkit-scrollbar means that you want to 
-  style the scrollbar of an element with the class workouts using the non-standard 
-  CSS pseudo-element ::-webkit-scrollbar. This pseudo-element affects the style of an 
-  element’s scrollbar when it has overflow: scroll; set. Note that this feature is only available 
-  in Blink- and WebKit-based browsers, such as Chrome, Edge, Opera, Safari, and others. A standardized
-  method of styling scrollbars is available with scrollbar-color and scrollbar-width, but is currently
-   only supported in Firefox. */
-}
 
 .workout {
-  background-color: var(--color-dark--2);
-  border-radius: 5px;
-  padding: 1.5rem 2.25rem;
-  margin-bottom: 1.75rem;
-  cursor: pointer;
-
+  margin: 0.5rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--background);
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 0.75rem 1.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  cursor: pointer;
+  font-size: 2rem;
+  gap: 1rem;
 }
-
-.workout--cycling {
-  border-left: 5px solid var(--color--orange);
-}
-
 .workout__title {
-  font-size: 1.7rem;
-  font-weight: 600;
-  grid-column: 1 / -1;
+  font-size: 2rem;
+  color: var(--color--letters);
 }
 
-.workout__details {
-  display: flex;
-  align-items: baseline;
-}
-
-.workout__icon {
-  font-size: 1.8rem;
-  margin-right: 0.2rem;
-  height: 0.28rem;
-}
-
-.workout__value {
-  font-size: 1.5rem;
-  margin-right: 0.5rem;
-}
-
-.workout__unit {
-  font-size: 1.1rem;
-  color: var(--color-light--1);
-  text-transform: uppercase;
-  font-weight: 800;
-}
-
-/* Popup width is defined in JS using options */
 .leaflet-popup .leaflet-popup-content-wrapper {
   background-color: var(--color--orange);
   color: var(--color-dark--2);
@@ -264,7 +229,7 @@ none: It prevents both scroll chaining and the default action. The scrolling sto
 }
 
 .leaflet-popup .leaflet-popup-content {
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 .leaflet-popup .leaflet-popup-tip {
@@ -274,6 +239,12 @@ none: It prevents both scroll chaining and the default action. The scrolling sto
 .cycling-popup .leaflet-popup-content-wrapper {
   border-left: 5px solid var(--color--orange);
 }
+
+/* =========================icons====================== */
+
+/* ===================================================== */
+
+/* ===================================== */
 /* footer */
 footer {
   margin-top: 10rem;
@@ -308,4 +279,37 @@ footer {
   padding: 1rem;
   font-size: 1.5rem;
   text-align: center;
+}
+
+@media (max-width: 52em) {
+  .form__container {
+    margin: 0.5rem;
+    padding: 1rem;
+    display: flex;
+    gap: 1.3rem;
+    flex-direction: column;
+    align-items: center;
+  }
+  .form__label {
+    flex: 0 0 53%;
+    margin-right: 1rem;
+    font-size: 3rem;
+    font-weight: 600;
+    color: #e0e0e0;
+  }
+  .form__input {
+    width: 11rem;
+    padding: 2rem;
+    font-family: inherit;
+    font-size: 2.4rem;
+  }
+  .workout {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem;
+    cursor: pointer;
+    font-size: 3rem;
+    gap: 1.3rem;
+  }
 }
