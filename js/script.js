@@ -17,6 +17,12 @@ const animation = document.querySelector(".animation");
 const sidebar = document.querySelector(".sidebar");
 const bannerUser = document.querySelector(".banner__user");
 const nameUser = document.getElementById("name");
+const nameBtn = document.querySelector(".form-button");
+const workoutContainer = document.querySelector(".workout__container");
+const resetBtn = document.querySelector(".reset");
+const divtouchMap = document.querySelector(".info__touch");
+const mapClick = document.getElementById("map");
+const formName = document.querySelector(".form__row");
 
 //let mapEvent, map; // store the object latitude and longitude in global variavel;
 
@@ -135,24 +141,53 @@ class Bicycle extends Workout {
 class AppBicycle {
   formUser = []; //to push the form
   bicycleIcon;
-  numbers = 0;
+  numbers = 1;
   #name;
   #map;
   #mapEvent;
   #coords;
+  elementhtmlMap;
+  marker = [];
+  circle = [];
+  control = [];
+  #dataUserCopy = [];
+
   constructor() {
-    form.addEventListener("submit", this._SummitFunction.bind(this));
+    this._getDataUser();
     this._getGeolocation();
+
+    form.addEventListener("submit", this._SummitFunction.bind(this));
+    workoutContainer.addEventListener(
+      "click",
+      this._moveMapPosition.bind(this)
+    );
+    resetBtn.addEventListener("click", this.reset.bind(this));
+    nameBtn.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (nameUser.value.match(/^[A-Za-z]+$/) && nameUser.value.length > 2) {
+        mapClick.style.pointerEvents = "auto";
+        formName.classList.add("hidden");
+        const html = `<p class="banner__user touch_map"> ${
+          nameUser.value[0].toUpperCase() +
+          nameUser.value.slice(1, nameUser.value.length).toLowerCase()
+        }
+        touch the map</p>`;
+        divtouchMap.insertAdjacentHTML("beforeend", html);
+      } else {
+        alert(`${nameUser.value} is a invalid name, try again!`);
+        nameUser.value = "";
+      }
+    });
   }
+  /* ================methods==================== */
+
   _getGeolocation() {
     navigator.geolocation.getCurrentPosition(
       this._getPosition.bind(this),
-
       this._gpsAccess()
     );
   }
 
-  /* ============================ */
   _getPosition(position) {
     bannerUser.classList.add("hidden");
     this.bicycleIcon = L.icon({
@@ -161,53 +196,79 @@ class AppBicycle {
 
       iconSize: [75, 40],
       shadowSize: [90, 25],
-      iconAnchor: [30, 74],
+      iconAnchor: [40, 44],
       shadowAnchor: [25, 62],
       popupAnchor: [15, -90],
     });
+
     const latitude = position.coords.latitude;
     const { longitude } = position.coords;
     this.#coords = [latitude, longitude];
     //{scrollWheelZoom:false} prenvent default scroll up from the map
     this.#map = L.map("map").setView(this.#coords, 15);
 
-    L.tileLayer(
-      "https://dev.{s}.tile.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png"
-    ).addTo(this.#map);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+      this.#map
+    );
 
     this.#map.on("click", this._modifyClasslistDom.bind(this));
+
+    this.formUser.forEach((element) => this._createMarkerPosition(element));
+    if (this.formUser.length > 0) {
+      this._modifyClasslistDom();
+      mapClick.style.pointerEvents = "auto";
+      form.classList.add("hidden");
+      animation.classList.remove("hidden");
+    }
   }
 
   /* ============================== */
   _modifyClasslistDom(TakeEvent) {
-    if (nameUser.value.match(/^[A-Za-z]+$/)) {
-      //check if it is a string name
-      this.#name = nameUser.value;
-      this._getTime();
-      this.#mapEvent = TakeEvent;
-      form.classList.remove("hidden");
-      information.classList.add("hidden");
-      animation.classList.add("hidden");
-      sidebar.classList.add("sidebar--columns");
-      inputKm.focus();
-      L.marker(this.#coords, { icon: this.bicycleIcon })
-        .addTo(this.#map)
-        .bindPopup(`${this.#name}`)
-        .openPopup();
-    } else {
-      this._alertMessage(`Please type your name `);
+    if (nameUser.value.match(/^[A-Za-z]+$/) && nameUser.value.length > 2) {
+      this.#name =
+        nameUser.value[0].toUpperCase() +
+        nameUser.value.slice(1, nameUser.value.length).toLowerCase();
     }
+
+    this._getTime();
+
+    this.#mapEvent = TakeEvent;
+    inputKm.focus();
+    L.marker(this.#coords, { icon: this.bicycleIcon })
+      .addTo(this.#map)
+      .bindPopup(`${this.#name}`)
+      .openPopup();
+
+    L.circle(this.#coords, {
+      color: " #dbce18",
+      fillColor: " #dbce18",
+      fillOpacity: 0.6,
+      radius: 80,
+    }).addTo(this.#map);
+    this._modifyPresentation();
+    form.classList.remove("hidden");
+    animation.classList.add("hidden");
   }
+
+  _modifyPresentation() {
+    information.classList.add("hidden");
+
+    divtouchMap.classList.add("hidden");
+    sidebar.classList.add("sidebar--columns");
+  }
+
   /* ================================= */
   ///////////// create objects with the user's input////////////////////
   _SummitFunction(e) {
     e.preventDefault();
     //inputs////////////////////////////////////////////////////
     let { lat, lng } = this.#mapEvent.latlng;
+
     let distance = +inputKm.value;
     let time = +inputTime.value;
     let elevation = +inputElevation.value;
     let formUserObject; //store the object
+
     ///////////////////////////////////////////////////////////
     //check inputs
     const checkNumber = (array) =>
@@ -217,7 +278,6 @@ class AppBicycle {
     if (!checkNumber([distance, time, elevation])) {
       this._alertMessage(`Invalid input`);
     } else {
-      this.numbers += 1;
       formUserObject = new Bicycle(
         [lat, lng],
         distance,
@@ -226,13 +286,13 @@ class AppBicycle {
         this.#name
       );
       this.formUser.push(formUserObject); //array formUser
+      this.#dataUserCopy.push(formUserObject);
       this._HtmlFormUser(formUserObject); //passing to create html code
-      this._createMarkerPosition(formUserObject, this.numbers); //passing object with the data
+      this._createMarkerPosition(formUserObject); //passing object with the data
     }
     //clean fills output;
     this._HideFormCleanInputs();
-    ////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
+    this._setlocalStorage();
   }
   _alertMessage(inputMessage) {
     alert(`${inputMessage}`);
@@ -240,57 +300,67 @@ class AppBicycle {
   _gpsAccess() {
     alert("please allow as check your current position");
   }
-  _createMarkerPosition(ObjectBicycle, number) {
+  _createMarkerPosition(ObjectBicycle) {
+    this.numbers++;
+
+    this.#name = ObjectBicycle.name;
     const popupMarket = L.popup({
-      autoClose: true,
+      autoClose: false,
       closeOnClick: false,
       className: ".leaflet-popup",
       maxWidth: 100,
     });
 
-    L.marker(ObjectBicycle.coords, {
+    const marker = L.marker(ObjectBicycle.coords, {
       icon: this.bicycleIcon,
       keyboard: true,
     })
       .addTo(this.#map)
       .bindPopup(popupMarket)
       .setPopupContent(
-        `${ObjectBicycle.name} it is your path number
- ${number}`
+        `${ObjectBicycle.name} location <span class="numbers"> ${this.numbers}</span>`
       )
       .openPopup();
-    console.log(ObjectBicycle);
+
+    this.marker.push(marker);
+
+    const circle = L.circle(ObjectBicycle.coords, {
+      color: "#6f6ec9d7",
+      fillColor: "#6f6ec9d7",
+      fillOpacity: 0.6,
+      radius: 100,
+    }).addTo(this.#map);
+    this.circle.push(circle);
   }
   _HtmlFormUser(ObjectBicycle) {
     const html = `
-    <div class="workout__container">
+    
       <li class="workout" data-id=${ObjectBicycle.id}>
          <div class="workout__details">
-          <span class="workout__icon">🚴‍♀️</span>
+          <span class="workout__icon"><img src="/img/bike-form.png"/></span>
           <span class="workout__value">${ObjectBicycle.distance}</span>
           <span class="workout__unit">km</span>
         </div>
         <div class="workout__details">
-          <span class="workout__icon">⏱</span>
+          <span class="workout__icon"><img src="/img/clock-form.png"/></span>
           <span class="workout__value">${ObjectBicycle.duration}</span>
           <span class="workout__unit">min</span>
         </div>
         <div class="workout__details">
-          <span class="workout__icon">⚡️</span>
+          <span class="workout__icon"><img src="/img/km-form.png"/></span>
           <span class="workout__value">${ObjectBicycle.speed.toFixed(1)}</span>
           <span class="workout__unit">km/h</span>
         </div>
         <div class="workout__details">
-          <span class="workout__icon">⛰</span>
+          <span class="workout__icon"><img src="/img/mountain-form.png"/></span>
           <span class="workout__value">${ObjectBicycle.elevation.toFixed(
             1
           )}</span>
           <span class="workout__unit">m</span>
         </div>
       </li>
-    </div>
     `;
-    sidebar.insertAdjacentHTML("beforeend", html);
+    workoutContainer.insertAdjacentHTML("beforeend", html);
   }
   _getTime() {
     const date = new Date();
@@ -300,6 +370,94 @@ class AppBicycle {
   _HideFormCleanInputs() {
     inputKm.value = inputTime.value = inputElevation.value = "";
     form.classList.add("hidden");
+    workoutContainer.classList.remove("hidden");
+  }
+
+  /* ------------------------------------------------------------------ */
+  _moveMapPosition(htmlClasses) {
+    this.elementhtmlMap = htmlClasses.target.closest(".workout");
+    if (!this.elementhtmlMap) return;
+
+    const checkingUsermap = this.formUser.find(
+      (userArr) => userArr.id === this.elementhtmlMap.dataset.id //checking id html
+    );
+    if (!this.elementhtmlMap.dataset.route) {
+      this._addRoutingMap(checkingUsermap);
+    }
+    this.elementhtmlMap.classList.add("workout__background");
+    resetBtn.classList.remove("hidden");
+    const workout = document.querySelectorAll(".workout");
+    workout.forEach((el) => {
+      if (el !== this.elementhtmlMap) {
+        el.classList.remove("workout__background");
+
+        this.#map.setView(checkingUsermap.coords, 15);
+      } else {
+        this.#map.setView(checkingUsermap.coords, 17);
+      }
+    });
+
+    this.elementhtmlMap.setAttribute("data-route", "route added");
+  }
+  _addRoutingMap(checkingUsermap) {
+    let control = L.Routing.control({
+      waypoints: [
+        L.latLng(this.#coords[0], this.#coords[1]),
+        L.latLng(checkingUsermap.coords),
+      ],
+
+      createMarker: function () {
+        return null;
+      },
+      fitSelectedRoutes: false,
+      routeWhileDragging: false,
+      addWaypoints: false,
+
+      lineOptions: {
+        styles: [{ color: "#6f6ec9d7", opacity: 1, weight: 5 }],
+      },
+    }).addTo(this.#map);
+
+    this.control.push(control);
+  }
+  /* --------------------------------------------------------------- */
+  _setlocalStorage() {
+    localStorage.setItem("dataUser", JSON.stringify(this.#dataUserCopy));
+  }
+  _getDataUser() {
+    const dataUser = JSON.parse(localStorage.getItem("dataUser"));
+    if (!dataUser) return;
+
+    this.formUser = dataUser;
+    this.formUser.forEach((element) => this._HtmlFormUser(element));
+  }
+  reset() {
+    resetBtn.classList.add("hidden");
+    this.numbers = 1;
+    this.formUser.forEach((userArr, i) => {
+      if (userArr.id === this.elementhtmlMap.dataset.id) {
+        this.#dataUserCopy.splice(i, 1);
+        this.#map.removeControl(this.control[i]);
+        this.#map.removeLayer(this.circle[i]);
+        this.marker[i].remove();
+      }
+    });
+    localStorage.setItem("dataUser", JSON.stringify(this.#dataUserCopy));
+    this.elementhtmlMap.remove();
+    const workout = document.querySelectorAll(".workout");
+    if (workout.length === 0) {
+      form.classList.remove("hidden");
+      this.formUser = [];
+      this.control = [];
+      this.circle = [];
+      this.marker = [];
+      this.#dataUserCopy = [];
+      this._removeALL();
+    }
+  }
+  _removeALL() {
+    localStorage.removeItem("dataUser");
+    // location.reload();
   }
 }
 
@@ -309,3 +467,5 @@ class AppBicycle {
 //That’s why we need to create a new object from the class
 const appBicycleObject = new AppBicycle();
 ///////////////////////////////////////////
+//localStorage.setItem("dataUser",JSON.stringify(this,formUser));
+// JSON.PARSE(localStorage.getItem("dataUser"))

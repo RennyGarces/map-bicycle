@@ -57,12 +57,19 @@ header {
   font-size: 2rem;
   background-color: var(--background);
 }
-
+.touch_map {
+  z-index: 10000;
+  top: 50%;
+  right: 50%;
+  font-size: 2.5rem;
+  transform: translate(50%, 50%);
+}
 aside {
   position: relative;
 }
 /* MAP */
 #map {
+  pointer-events: none;
   overscroll-behavior-y: none;
   position: relative;
   border: 2px solid #2c182c0a;
@@ -204,10 +211,19 @@ none: It prevents both scroll chaining and the default action. The scrolling sto
 .form__btn {
   display: none;
 }
+.reset {
+  cursor: pointer;
+  background-color: var(--background);
+  border: none;
+  display: flex;
+  align-self: start;
+  padding: 1.6rem;
+  color: var(--color--letters);
+}
 /* ============================================================== */
 
 .workout {
-  margin: 0.5rem;
+  margin-bottom: 1rem;
   padding: 1rem;
   border-radius: 1rem;
   background-color: var(--background);
@@ -217,32 +233,32 @@ none: It prevents both scroll chaining and the default action. The scrolling sto
   font-size: 2rem;
   gap: 1rem;
 }
+.workout__background {
+  background-color: #a8b8ffc9;
+  color: black;
+}
 .workout__title {
   font-size: 2rem;
   color: var(--color--letters);
 }
-
+.workout__icon img {
+  width: 50px;
+}
 .leaflet-popup .leaflet-popup-content-wrapper {
+  padding: 0;
+  text-align: center;
+  font-size: 1.5rem;
   background-color: var(--color--orange);
   color: var(--color-dark--2);
-  border: 2px solid var(--color-dark--1);
+  font-weight: 600;
+  border: 3px solid var(--background);
 }
-
-.leaflet-popup .leaflet-popup-content {
+.numbers {
+  color: var(--background);
+  font-weight: 600;
   font-size: 2rem;
+  font-style: italic;
 }
-
-.leaflet-popup .leaflet-popup-tip {
-  background-color: var(--color-dark--1);
-}
-
-.cycling-popup .leaflet-popup-content-wrapper {
-  border-left: 5px solid var(--color--orange);
-}
-
-/* =========================icons====================== */
-
-/* ===================================================== */
 
 /* ===================================== */
 /* footer */
@@ -282,6 +298,12 @@ footer {
 }
 
 @media (max-width: 52em) {
+  .information__touch {
+    font-size: 2rem;
+  }
+  .letter__logo {
+    display: none;
+  }
   .form__container {
     margin: 0.5rem;
     padding: 1rem;

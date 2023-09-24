@@ -27,6 +27,26 @@
     <script defer src="js/script.js"></script>
     <link rel="shortcut icon" type="image/png" href="img/icon-preview.png" />
     <link rel="stylesheet" href="css/style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
+    />
+    <link
+      rel="stylesheet"
+      href="routing/leaflet-routing-machine-3.2.12/dist/leaflet-routing-machine.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script
+      defer
+      src="routing/leaflet-routing-machine-3.2.12/dist/leaflet-routing-machine.js"
+    ></script>
+
     <title>MapingYou</title>
   </head>
   <body>
@@ -48,17 +68,21 @@
     </aside>
     <section class="container">
       <div class="sidebar">
+        <button class="reset hidden">Clean position</button>
         <div class="information">
+          <div class="info__touch"></div>
           <h1 class="information__touch">
             Type your name and touch the map to see the options
           </h1>
           <div class="form__row">
-            <label class="form__label">Name</label>
-            <input
-              class="form__input form__input--name"
-              id="name"
-              placeholder="Name"
-            />
+            <form class="form-button">
+              <label class="form__label">Name</label>
+              <input
+                class="form__input form__input--name"
+                id="name"
+                placeholder="Name"
+              />
+            </form>
           </div>
           <img
             src="img/only-letter--preview.png"
@@ -89,6 +113,7 @@
             </div>
             <button class="form__btn">OK</button>
           </form>
+          <div class="workout__container hidden"></div>
         </div>
       </div>
     </section>
